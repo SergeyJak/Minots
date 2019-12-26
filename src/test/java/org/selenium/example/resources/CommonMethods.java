@@ -56,13 +56,11 @@ public class CommonMethods extends IntegrationTestParent{
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(Id)));
     }
 
-    public static void clickAndVerifyTextButtonByCssSelector(String cssSelector, String buttonNameRegex){
+    public static void waitUntilElementWillVisibleByXpath(String xpath){
 
-        WebElement button = driver.findElement(By.cssSelector(cssSelector));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
 
-        Assert.assertEquals(buttonNameRegex, button.getText());
-
-        button.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
 
     public static void clickTextButtonByCssSelector(String cssSelector){
@@ -72,11 +70,9 @@ public class CommonMethods extends IntegrationTestParent{
         button.click();
     }
 
-    public static void clickAndVerifyTextButtonByLinkText(String linkText, String buttonNameRegex){
+    public static void clickAndVerifyTextButtonByLinkText(String linkText){
 
         WebElement button = driver.findElement(By.linkText(linkText));
-
-        Assert.assertEquals(buttonNameRegex, button.getText());
 
         button.click();
     }
@@ -111,5 +107,17 @@ public class CommonMethods extends IntegrationTestParent{
     public static void scrollDown(){
         JavascriptExecutor jse = (JavascriptExecutor)driver;
         jse.executeScript("scroll(0, 250);");
+    }
+
+    public static void fillPersonInformationPage(){
+        CommonMethods.fillTextFieldById(Constants.FIRST_NAME_FIELD_ID, Constants.PERSON_NAME);
+        CommonMethods.fillTextFieldById(Constants.LAST_NAME_FIELD_ID, Constants.PERSON_LAST_NAME);
+        CommonMethods.fillTextFieldById(Constants.ADDRESS_FIELD_ID, Constants.PERSON_STREET_NAME);
+        waitUntilElementWillVisibleByCssSelector(".pcaselected");
+        CommonMethods.clickTextButtonByCssSelector(".pcaselected");
+        waitUntilElementWillVisibleByCssSelector(".pcaselected");
+        CommonMethods.clickTextButtonByCssSelector(".pcaselected");
+        CommonMethods.fillTextFieldById(Constants.TELEPHONE_NR_FIELD_ID, Constants.PERSON_PHONE_NUMBER);
+        CommonMethods.scrollDown();
     }
 }

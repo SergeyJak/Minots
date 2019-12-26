@@ -6,7 +6,6 @@ import org.selenium.example.resources.Constants;
 import org.selenium.example.resources.IntegrationTestParent;
 
 import static org.selenium.example.resources.CommonMethods.verifyAndCloseIfCristmasSalesPagePresent;
-import static org.selenium.example.resources.CommonMethods.waitUntilElementWillVisibleByCssSelector;
 
 
 public class BuyGoodTest extends IntegrationTestParent {
@@ -14,53 +13,52 @@ public class BuyGoodTest extends IntegrationTestParent {
     @Test
     public void test() throws InterruptedException {
 
-        // 1. Verify top Menu
-        CommonMethods.verifyTopMenu();
-
-        // 2. Close Spam page if present
+        // 1. Close Spam page if present
         verifyAndCloseIfCristmasSalesPagePresent();
 
-        // 3. Wait until spam page will be closed
-        CommonMethods.waitUntilElementWillVisibleById("topMenuWrapper");
+        // 2. Wait until spam page will be closed
+        CommonMethods.waitUntilElementWillVisibleById(Constants.TOP_MENU_ID);
 
-        CommonMethods.clickAndVerifyTextButtonByCssSelector(".RootGroup > .mmHasChild:nth-child(3) > a", Constants.MENS);
-        CommonMethods.clickAndVerifyTextButtonByLinkText("Trainers", Constants.TRAINERS);
-        CommonMethods.clickAndVerifyTextButtonByCssSelector("li:nth-child(1) .rtimg", "");
-        CommonMethods.clickAndVerifyTextButtonByCssSelector("#dnn_ctr175232963_ViewTemplate_ctl00_ctl14_rptSizes_ctl00_liItem span", Constants.SHOES_SIZE_BUTTON);
-        CommonMethods.clickAndVerifyTextButtonByCssSelector(".addToBag", Constants.ADD_TO_BAG);
-        CommonMethods.waitUntilElementWillVisibleByCssSelector(".HeaderCheckoutLink");
-        CommonMethods.clickAndVerifyTextButtonByCssSelector(".HeaderCheckoutLink", Constants.CHECKOUT);
-        CommonMethods.clickAndVerifyTextButtonById("dnn_ctr175232949_ViewBasket_lnkBtnContinueSecurely", Constants.CONTINUE_SECURELY);
+        // 3. Verify top Menu
+        CommonMethods.verifyTopMenu();
 
-        // Mail page
-        CommonMethods.clickOnTextFieldById("txtGuestCustomerEmailAddress");
-        CommonMethods.fillTextFieldById("txtGuestCustomerEmailAddress", "test@tests.com");
-        CommonMethods.clickAndVerifyTextButtonById("dnn_ctr175233219_Launch_btnGuestCustomer", Constants.CONTINUE_SECURELY);
+        // 4. Choose MENS goods
+        CommonMethods.clickAndVerifyTextButtonByXpath(Constants.MENS_BUTTON_XPATH, Constants.MENS);
 
-        //Person page
-        fillPersonPage();
+        // 5. Trainers sub directory
+        CommonMethods.clickAndVerifyTextButtonByLinkText(Constants.TRAINERS);
 
-        // Continue with next page
-        CommonMethods.clickAndVerifyTextButtonById("dnn_ctr175233229_Delivery_DeliveryGroupSelection_btnPersonalDetailsChange", "");
+        //6. Choose good
+        CommonMethods.clickAndVerifyTextButtonByXpath(Constants.SHOES_IMAGE_BUTTON_XPATH, Constants.NO_REGEX);
 
-        // Delivery page
-        CommonMethods.clickAndVerifyTextButtonByXpath("//label/div/div[3]/span", "");
-        CommonMethods.clickAndVerifyTextButtonById("dnn_ctr175233229_Delivery_btnContinue", "");
+        //7. Set size of good
+        CommonMethods.clickAndVerifyTextButtonByLinkText(Constants.SHOES_SIZE_BUTTON);
 
-        //Payment page
-        CommonMethods.clickAndVerifyTextButtonByXpath("//span[3]/span", "");
+        //8. Add to bag
+        CommonMethods.clickAndVerifyTextButtonById(Constants.ADD_TO_BAG_BUTTON_ID, Constants.ADD_TO_BAG);
 
-    }
+        // 9. Go to checkout page
+        CommonMethods.waitUntilElementWillVisibleByXpath(Constants.CHECKOUT_BUTTON_XPATH);
+        CommonMethods.clickAndVerifyTextButtonByXpath(Constants.CHECKOUT_BUTTON_XPATH, Constants.CHECKOUT);
 
-    private void fillPersonPage(){
-        CommonMethods.fillTextFieldById("dnn_ctr175233229_Delivery_DeliveryGroupSelection_DeliveryAddressForm_txtFirstName", Constants.PERSON_NAME);
-        CommonMethods.fillTextFieldById("dnn_ctr175233229_Delivery_DeliveryGroupSelection_DeliveryAddressForm_txtLastName", Constants.PERSON_LAST_NAME);
-        CommonMethods.fillTextFieldById("dnn_ctr175233229_Delivery_DeliveryGroupSelection_DeliveryAddressForm_txtAddress1", Constants.STREET_NAME);
-        waitUntilElementWillVisibleByCssSelector(".pcaselected");
-        CommonMethods.clickTextButtonByCssSelector(".pcaselected");
-        waitUntilElementWillVisibleByCssSelector(".pcaselected");
-        CommonMethods.clickTextButtonByCssSelector(".pcaselected");
-        CommonMethods.fillTextFieldById("dnn_ctr175233229_Delivery_DeliveryGroupSelection_TelephoneNumberEntry_txtTelephone", Constants.PHONE_NUMBER);
-        CommonMethods.scrollDown();
+        //10. Press "Continue Securely" to start purchase
+        CommonMethods.clickAndVerifyTextButtonById(Constants.CS_BUTTON_BASKET_ID, Constants.CONTINUE_SECURELY);
+
+        // 11. Mail page, continue as guest
+        CommonMethods.clickOnTextFieldById(Constants.MAIL_FIELD_ID);
+        CommonMethods.fillTextFieldById(Constants.MAIL_FIELD_ID, Constants.PERSON_MAIL);
+        CommonMethods.clickAndVerifyTextButtonById(Constants.CS_BUTTON_MAIL_ID, Constants.CONTINUE_SECURELY);
+
+        // 12. Person page, fill all mandatory fields
+        CommonMethods.fillPersonInformationPage();
+        CommonMethods.clickAndVerifyTextButtonById(Constants.CS_BUTTON_PERSON_INFORMATION_ID, Constants.NO_REGEX);
+
+        // 13. Delivery page, chose Standard delivery.
+        CommonMethods.clickAndVerifyTextButtonByXpath(Constants.DELIVERY_BUTTON_XPATH, Constants.NO_REGEX);
+        CommonMethods.clickAndVerifyTextButtonById(Constants.CS_BUTTON_DELIVERY_ID, Constants.NO_REGEX);
+
+        // 14. Payment page
+        CommonMethods.clickAndVerifyTextButtonByXpath(Constants.PAYMENT_BY_CARD_BUTTON_XPATH, Constants.NO_REGEX);
+
     }
 }
