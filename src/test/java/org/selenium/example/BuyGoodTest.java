@@ -1,5 +1,6 @@
 package org.selenium.example;
 
+import com.sun.org.glassfish.gmbal.Description;
 import org.junit.Test;
 import org.selenium.example.resources.CommonMethods;
 import org.selenium.example.resources.Constants;
@@ -10,6 +11,7 @@ import static org.selenium.example.resources.CommonMethods.verifyAndCloseIfCrist
 
 public class BuyGoodTest extends IntegrationTestParent {
 
+    @Description("crete Selenium TCs for buying good in e-shop (i.e. from sportsdirect.com)")
     @Test
     public void test() throws InterruptedException {
 
